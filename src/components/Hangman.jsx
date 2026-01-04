@@ -379,50 +379,57 @@ const Hangman = () => {
 
         @media (max-width: 600px) {
           .hangman-page {
-            padding-top: 80px;
-            padding-bottom: 1rem;
+            padding-top: 70px;
+            padding-bottom: 0.5rem;
           }
 
           .hangman-game-grid {
-            padding: 1.5rem;
-            gap: 2rem;
-            margin-top: 1rem;
+            padding: 1rem;
+            gap: 1rem; /* Reduced gap */
+            margin-top: 0.5rem;
           }
 
           .illustration-side {
-            padding: 1rem;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.1);
+          }
+          
+          .hangman-svg {
+            width: 120px; /* Smaller image */
+            height: 150px;
           }
 
           .game-info {
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem; /* Tighter spacing */
           }
 
           .word-slots {
-            gap: 0.4rem;
-            margin-bottom: 1.5rem;
+            gap: 0.2rem;
+            margin-bottom: 1rem;
           }
 
           .letter-slot {
-            width: 30px;
-            height: 40px;
-            font-size: 1.5rem;
+            width: 28px;
+            height: 38px;
+            font-size: 1.2rem;
             border-bottom-width: 2px;
           }
           
           .space-slot {
-            width: 10px;
+            width: 8px;
           }
 
           .virtual-keyboard {
-            gap: 6px;
+            gap: 4px; /* Tighter keys */
           }
 
           .key {
             width: auto;
-            min-width: 40px;
-            height: 45px; /* Larger touch target */
-            font-size: 1rem;
-            flex: 1 0 12%; /* Allow keys to grow and wrap nicely */
+            min-width: 34px; /* Narrower keys */
+            height: 40px;    /* Shorter keys */
+            font-size: 0.9rem;
+            flex: 1 0 10%;
+            border-radius: 6px;
           }
 
           .modal-content {
@@ -430,30 +437,12 @@ const Hangman = () => {
           }
 
           .modal-content h3 {
-            font-size: 2rem;
+            font-size: 1.8rem;
           }
 
           .emoji-result {
-            font-size: 4rem;
+            font-size: 3.5rem;
           }
-          
-          .next-btn {
-            font-size: 1rem;
-            padding: 0.8rem 2rem;
-          }
-        }
-        
-        @media (max-width: 380px) {
-           .key {
-             min-width: 35px;
-             height: 40px;
-             font-size: 0.9rem;
-           }
-           
-           .hangman-svg {
-             width: 150px;
-             height: 180px;
-           }
         }
       `}</style>
     </div>

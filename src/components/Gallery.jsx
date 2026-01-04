@@ -349,7 +349,7 @@ const Gallery = () => {
   return (
     <section id="gallery" className="section container">
       <h2 className="heading">Photo <span>Gallery</span></h2>
-      <p className="subheading">Exploring Nepal, One District at a Time.</p>
+      <p className="subheading">Exploring Nepal: Districts, Heritage, and Culture.</p>
 
       {/* Location Filter Tabs */}
       <div className="filter-container">
