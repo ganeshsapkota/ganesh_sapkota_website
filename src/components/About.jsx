@@ -12,10 +12,7 @@ const About = () => {
         <div className="about-text">
           <h2 className="heading">About <span>Me</span></h2>
           <p className="lead">
-            Visionary storyteller through the lens. Capturing life's most precious moments with a unique perspective.
-          </p>
-          <p>
-            With years of experience in professional photography and videography, I focus on capturing the soul of every subject. Based on the philosophy that every frame tells a story, "Ganesh Sapkota" is more than a name—it's a journey into the extraordinary.
+            I’m Ganesh Sapkota, a travel photographer and videographer who loves exploring new places and capturing real moments. Through my work, I highlight tourist destinations, local culture, heritage, and the natural beauty of each place. My goal is to share honest stories that inspire people to travel and experience the world differently.
           </p>
 
         </div>
@@ -31,6 +28,13 @@ const About = () => {
           grid-template-columns: 1fr 1fr;
           gap: 4rem;
           align-items: center;
+          padding: 4rem 0; /* Add vertical spacing */
+        }
+
+        .about-image {
+          max-width: 450px; /* Medium size on desktop */
+          margin: 0 auto;   /* Center in grid cell */
+          width: 100%;
         }
 
         .image-frame {
@@ -97,51 +101,64 @@ const About = () => {
 
         @media (max-width: 768px) {
           .about-grid {
-            grid-template-columns: 1fr 1.2fr;
-            gap: 1.5rem;
-            align-items: start;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 1rem;
+            align-items: center; /* Vertically center the photo relative to text */
+            padding: 2rem 0;
+          }
+
+          .about-image {
+            width: 100%;
+            height: auto; 
+            margin-top: 0; /* Reset margin for centering */
           }
 
           .image-frame {
-            padding: 0.5rem;
+            padding: 0.3rem;
             border-width: 1px;
+            width: 100%;
           }
            
           .image-frame::after {
-            top: 0.8rem;
-            left: 0.8rem;
+            top: 0.5rem;
+            left: 0.5rem;
             border-width: 1px;
+            height: 100%;
+            width: 100%;
           }
 
-          .heading {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+          .image-frame img {
+            height: auto;
+            width: 100%;
+            object-fit: contain; /* Show full image */
           }
           
+          .heading {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem; /* Space after heading as requested */
+            margin-top: 0;
+            line-height: 1.1;
+          }
+
           .lead {
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 0.85rem; /* More readable size */
+            margin-bottom: 0.8rem;
             line-height: 1.4;
           }
 
           .about-text p {
-            font-size: 0.8rem;
+            font-size: 0.8rem; /* readable size */
             margin-bottom: 1rem;
-            line-height: 1.5;
+            line-height: 1.4;
           }
 
           .stats-grid {
-            margin-top: 1.5rem;
-            gap: 1rem;
+            margin-top: 1rem;
+            gap: 0.5rem;
           }
-
-          .stat-num {
-            font-size: 1.5rem;
-          }
-
-          .stat-label {
-            font-size: 0.6rem;
-          }
+          
+          .stat-num { font-size: 1.2rem; }
+          .stat-label { font-size: 0.5rem; }
         }
 
       `}</style>
