@@ -347,7 +347,7 @@ const Gallery = () => {
   };
 
   return (
-    <section id="gallery" className="section container">
+    <section id="gallery" className="section container gallery-section">
       <h2 className="heading">Photo <span>Gallery</span></h2>
       <p className="subheading">Exploring Nepal: Districts, Heritage, and Culture.</p>
 
@@ -399,10 +399,15 @@ const Gallery = () => {
       )}
 
       <style>{`
+        .gallery-section {
+          padding-top: 2rem;
+          padding-bottom: 2rem;
+        }
+
         .subheading {
           text-align: center;
           color: var(--text-secondary);
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
           font-size: 1.1rem;
         }
 
@@ -411,8 +416,8 @@ const Gallery = () => {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          gap: 0.8rem;
-          margin-bottom: 3rem;
+          gap: 0.6rem;
+          margin-bottom: 2rem;
         }
 
         .filter-btn {
@@ -443,9 +448,12 @@ const Gallery = () => {
         /* Grid Layout */
         .gallery-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr); /* Default 3 columns */
-          gap: 1.5rem;
-          margin-top: 1rem;
+          grid-template-columns: repeat(3, 1fr); /* Back to 3 columns */
+          gap: 0.8rem;
+          margin-top: 0.5rem;
+          max-width: 1000px; /* Limit width to keep height in check */
+          margin-left: auto;
+          margin-right: auto;
           animation: fadeIn 0.5s ease-in-out;
         }
 
@@ -457,7 +465,7 @@ const Gallery = () => {
         .gallery-item {
           position: relative;
           cursor: pointer;
-          aspect-ratio: 1 / 1; /* Square thumbnails */
+          aspect-ratio: 4 / 3; /* Landscape helps save vertical height */
           overflow: hidden;
           border-radius: 8px;
           border: 1px solid rgba(255,255,255,0.1);
@@ -584,9 +592,13 @@ const Gallery = () => {
         .modal-nav.next { right: 40px; }
 
         /* Responsive Breakpoints */
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
           .gallery-grid {
-            gap: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+          }
+          .gallery-item {
+            aspect-ratio: 1 / 1; /* Keep square on mobile if preferred */
           }
         }
 
