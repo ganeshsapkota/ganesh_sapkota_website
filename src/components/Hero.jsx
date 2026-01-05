@@ -7,10 +7,9 @@ const Hero = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const [flashActive, setFlashActive] = useState(false);
-  const canvasRef = useRef(null);
-
+  // const canvasRef = useRef(null); // REMOVED
   const heroRef = useRef(null);
-  const particles = useRef([]);
+  // const particles = useRef([]); // REMOVED
 
 
   useEffect(() => {
@@ -28,130 +27,23 @@ const Hero = () => {
       setScrollY(window.scrollY);
     };
 
+    const handleTouchMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const touch = e.touches[0];
+      const x = (touch.clientX - innerWidth / 2) / (innerWidth / 2);
+      const y = (touch.clientY - innerHeight / 2) / (innerHeight / 2);
+      setMousePos({ x, y });
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
     window.addEventListener('scroll', handleScroll);
 
-
-    // Canvas animation logic
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-      constructor(x, y, color, velocity, size = 1.5, decay = 0.01) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.velocity = velocity;
-        this.alpha = 1;
-        this.friction = 0.98;
-        this.gravity = 0.1;
-        this.size = size;
-        this.decay = decay;
-      }
-
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = this.color;
-        ctx.fill();
-        ctx.restore();
-      }
-
-      update() {
-        this.draw();
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
-        this.velocity.y += this.gravity;
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
-        this.alpha -= this.decay;
-      }
-    }
-
-    const createFirework = (x, y, particleCount = 40, isFlame = false) => {
-      const angleIncrement = (Math.PI * 2) / particleCount;
-      const goldColors = isFlame
-        ? ['#ff5722', '#ff9800', '#ffc107', '#d4af37']
-        : ['#d4af37', '#f1c40f', '#fff3b0', '#ffffff'];
-
-      for (let i = 0; i < particleCount; i++) {
-        const speed = isFlame ? Math.random() * 4 : Math.random() * 6;
-        particles.current.push(
-          new Particle(
-            x,
-            y,
-            goldColors[Math.floor(Math.random() * goldColors.length)],
-            {
-              x: Math.cos(angleIncrement * i) * speed,
-              y: Math.sin(angleIncrement * i) * speed - (isFlame ? 2 : 0)
-            },
-            isFlame ? Math.random() * 2 + 0.5 : 1.5,
-            isFlame ? 0.02 : 0.01
-          )
-        );
-      }
-    };
-
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particles.current.forEach((particle, index) => {
-        if (particle.alpha > 0) {
-          particle.update();
-        } else {
-          particles.current.splice(index, 1);
-        }
-      });
-
-      // Auto-launch subtle sparks from center (Lens Area)
-      if (Math.random() < 0.1) {
-        const centerX = canvas.width / 2 + (mousePos.x * 30);
-        const centerY = canvas.height / 2 + (mousePos.y * 30);
-        createFirework(
-          centerX + (Math.random() - 0.5) * 100,
-          centerY + (Math.random() - 0.5) * 100,
-          5,
-          true
-        );
-      }
-
-      // Background ambient sparks
-      if (Math.random() < 0.02) {
-        createFirework(
-          Math.random() * canvas.width,
-          Math.random() * canvas.height * 0.7,
-          10
-        );
-      }
-    };
-
-    animate();
+    // Canvas logic REMOVED
 
     const triggerFlash = () => {
       setFlashActive(true);
-
-      // Create a burst of particles for the flash
-      const centerX = window.innerWidth * 0.4; // Approximate camera position in photo
-      const centerY = window.innerHeight * 0.4;
-      createFirework(centerX, centerY, 60, false); // White/Gold sparks
-
       setTimeout(() => setFlashActive(false), 150);
-
       // Random repeat
       setTimeout(triggerFlash, Math.random() * 5000 + 4000);
     };
@@ -159,22 +51,12 @@ const Hero = () => {
     // Start random flashes after initial load
     const flashTimer = setTimeout(triggerFlash, 3000);
 
-    const handleCanvasClick = (e) => {
-      createFirework(e.clientX, e.clientY, 50);
-    };
-
-
-    canvas.addEventListener('click', handleCanvasClick);
-
     return () => {
       clearTimeout(timer);
       clearTimeout(flashTimer);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('scroll', handleScroll);
-
-      window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
-      canvas.removeEventListener('click', handleCanvasClick);
     };
 
   }, [mousePos]); // Re-bind for center tracking
@@ -182,23 +64,21 @@ const Hero = () => {
   return (
     <section className="hero" ref={heroRef}>
       <div className={`camera-flash ${flashActive ? 'active' : ''}`}></div>
-      <canvas ref={canvasRef} className="celebration-canvas" />
+      {/* <canvas ref={canvasRef} className="celebration-canvas" /> REMOVED */}
 
-
-      <div className="lens-flare" style={{
-        transform: `translate(${mousePos.x * 50}px, ${mousePos.y * 50}px)`,
-        left: `${(mousePos.x + 1) * 50}%`,
-        top: `${(mousePos.y + 1) * 50}%`
-      }}></div>
 
       <div className="hero-centerpiece" style={{
         transform: `translate(calc(-50% + ${mousePos.x * 20}px), calc(-50% + ${mousePos.y * 20}px + ${scrollY * 0.3}px))`,
-        scale: `${1 + scrollY * 0.0005}`
+        scale: `${1 + scrollY * 0.0005}`,
+        zIndex: 5
       }}>
 
         <div className="photo-container">
           <div className="photo-glow-outer"></div>
-          <div className="photo-wrapper">
+          <div className="photo-wrapper" style={{
+            transform: `perspective(1000px) rotateY(${mousePos.x * 15}deg) rotateX(${-mousePos.y * 15}deg) scale(1.02)`,
+            transition: 'transform 0.1s ease-out'
+          }}>
             <img src={heroLensImg} alt="Ganesh Sapkota" className="hero-photo-img" />
             <div className="photo-overlay"></div>
           </div>
@@ -290,11 +170,11 @@ const Hero = () => {
           border-radius: 24px;
           overflow: hidden;
           box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-          animation: photoFloat 6s infinite ease-in-out;
           border: 1px solid rgba(212, 175, 55, 0.2);
           border: 1px solid rgba(212, 175, 55, 0.2);
           mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
           -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+          will-change: transform;
         }
 
 
@@ -339,27 +219,9 @@ const Hero = () => {
           z-index: 2;
         }
 
-        @keyframes photoFloat {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(1deg); }
-        }
-
         @keyframes glowPulse {
           0% { opacity: 0.4; transform: scale(0.9); }
           100% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        .lens-flare {
-          position: absolute;
-          width: 600px;
-          height: 600px;
-          background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0) 70%);
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 2;
-          filter: blur(60px);
-          transition: transform 0.2s ease-out;
-          mix-blend-mode: screen;
         }
 
         .hero-frames {
@@ -490,6 +352,7 @@ const Hero = () => {
           transition-delay: 0.6s;
           max-width: 500px;
           margin-left: auto;
+          margin-right: auto;
           font-weight: 300;
           letter-spacing: 1px;
         }
@@ -547,7 +410,6 @@ const Hero = () => {
           .hero-title { font-size: 2.5rem; }
           .hero-subtitle { font-size: 1rem; margin-bottom: 1.5rem; }
           .frame { display: none; }
-          .lens-flare { display: none; }
           .photo-container { width: 100vw; aspect-ratio: 1 / 1.1; }
           .photo-wrapper { border-radius: 0; mask-image: none; -webkit-mask-image: none; opacity: 1; }
           .hero-subtitle { margin-left: auto; margin-right: auto; }
